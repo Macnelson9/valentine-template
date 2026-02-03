@@ -7,6 +7,7 @@ const RECEIPT_ITEMS = [
   { label: "Laughs", value: "A lot" },
   { label: "Patience", value: "Premium" },
   { label: "Hugs (owed)", value: "Uncountable" },
+  { label: "Kisses (owed)", value: "Uncountable" },
 ];
 
 /**
@@ -37,12 +38,16 @@ export default function ReceiptScreen({ onBack, onOpenWhen }) {
           <span>Total</span>
           <span>Priceless 💛</span>
         </div>
-        <p className="receipt-footer">Thank you for choosing me.</p>
+        <p className="receipt-footer">Thank you for choosing me. 😚</p>
         <div className="receipt-actions">
           <button className="btn btn-secondary" type="button" onClick={onBack}>
             Back
           </button>
-          <button className="btn btn-primary" type="button" onClick={onOpenWhen}>
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={onOpenWhen}
+          >
             Open when…
           </button>
         </div>

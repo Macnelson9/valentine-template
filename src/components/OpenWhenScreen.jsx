@@ -3,24 +3,28 @@ import { AnimatePresence, motion } from "framer-motion";
 
 const OPEN_WHEN_NOTES = [
   {
-    label: "Open when you miss me",
+    label: "Open when you miss me 🥹",
     note: "Close your eyes and remember one small moment that made you smile. I'm right there with you.",
   },
   {
-    label: "Open when you’re stressed",
+    label: "Open when you’re stressed 🤧",
     note: "Breathe in for four, hold for four, out for four. I’m cheering for you, always.",
   },
   {
-    label: "Open when you want to smile",
+    label: "Open when you want to smile 😄",
     note: "Think of the cutest thing we’ve laughed about. I’m saving more for you.",
   },
   {
-    label: "Open when you need motivation",
+    label: "Open when you need motivation 💪",
     note: "You’re stronger than you feel right now. I believe in you and your big beautiful future.",
   },
   {
-    label: "Open when it’s late at night",
+    label: "Open when it’s late at night 🌙",
     note: "Pretend this is a forehead kiss. Rest well, love. I’ll see you in the morning.",
+  },
+  {
+    label: "Open when you feel like you're not enough 🥺",
+    note: "You are enough. You are perfect. You are loved. You are wanted. You are needed. You are valued. You are important. You are worthy.",
   },
 ];
 

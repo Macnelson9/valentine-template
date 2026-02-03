@@ -9,47 +9,83 @@ const TILES = [
   { id: "small-2", className: "bento-tile tile-small" },
   { id: "small-3", className: "bento-tile tile-small" },
 ];
+const VIDEO_TILE_COUNT = 2;
+const VIDEO_TILE_INDEXES = [1, 5];
 
 /**
  * @param {{ media: { type: "image" | "video", src: string, alt?: string }[] }} props
  */
 export default function BentoSlideshow({ media = [] }) {
   const shouldReduceMotion = useReducedMotion();
-  const [tick, setTick] = useState(0);
   const [broken, setBroken] = useState({});
+  const [indices, setIndices] = useState(() =>
+    TILES.map((_, index) => index),
+  );
+  const [modes, setModes] = useState(() =>
+    TILES.map((_, index) => (index % 2 === 0 ? "image" : "video")),
+  );
 
   const mediaList = useMemo(() => media.filter(Boolean), [media]);
+  const imageItems = useMemo(
+    () => mediaList.filter((item) => item.type === "image"),
+    [mediaList],
+  );
+  const videoItems = useMemo(
+    () => mediaList.filter((item) => item.type === "video"),
+    [mediaList],
+  );
+
+  useEffect(() => {
+    if (!mediaList.length) return;
+    setModes(
+      TILES.map((_, index) => {
+        if (imageItems.length === 0) return "video";
+        if (videoItems.length === 0) return "image";
+        if (videoItems.length < VIDEO_TILE_COUNT) {
+          return videoItems.length > 0 && index === 0 ? "video" : "image";
+        }
+        return VIDEO_TILE_INDEXES.includes(index) ? "video" : "image";
+      }),
+    );
+    setIndices(TILES.map((_, index) => index));
+  }, [imageItems.length, mediaList.length, videoItems.length]);
 
   useEffect(() => {
     if (shouldReduceMotion || mediaList.length === 0) return undefined;
     const interval = window.setInterval(() => {
-      setTick((prev) => prev + 1);
+      setIndices((prev) =>
+        prev.map((currentIndex, tileIndex) => {
+          if (modes[tileIndex] !== "image") return currentIndex;
+          if (!imageItems.length) return currentIndex;
+          return (currentIndex + 1) % imageItems.length;
+        }),
+      );
     }, 3200);
     return () => window.clearInterval(interval);
-  }, [mediaList.length, shouldReduceMotion]);
+  }, [imageItems.length, mediaList.length, modes, shouldReduceMotion]);
 
   return (
     <div className="bento-slideshow" aria-hidden="true">
       <div className="bento-grid">
         {TILES.map((tile, index) => {
-          const mediaIndex = mediaList.length
-            ? (index + tick) % mediaList.length
-            : -1;
-          const currentRaw = mediaIndex >= 0 ? mediaList[mediaIndex] : null;
+          const mode = modes[index];
+          const pool = mode === "video" ? videoItems : imageItems;
+          const poolIndex = pool.length ? indices[index] % pool.length : -1;
+          const currentRaw = poolIndex >= 0 ? pool[poolIndex] : null;
           const current =
             currentRaw && !broken[currentRaw.src] ? currentRaw : null;
           const mediaKey = current?.src || `placeholder-${tile.id}`;
 
           return (
             <div key={tile.id} className={tile.className}>
-              <AnimatePresence mode="wait">
+              <AnimatePresence mode="sync" initial={false}>
                 <motion.div
                   key={mediaKey}
                   className="bento-media"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.9, ease: "easeInOut" }}
+                  transition={{ duration: 5, ease: "easeInOut" }}
                 >
                   {current ? (
                     current.type === "video" ? (
