@@ -39,12 +39,15 @@ export default function BentoSlideshow({ media = [] }) {
     if (!mediaList.length) return;
     setModes(
       TILES.map((_, index) => {
-        if (imageItems.length === 0) return "video";
         if (videoItems.length === 0) return "image";
-        if (videoItems.length < VIDEO_TILE_COUNT) {
-          return videoItems.length > 0 && index === 0 ? "video" : "image";
-        }
-        return VIDEO_TILE_INDEXES.includes(index) ? "video" : "image";
+        if (imageItems.length === 0) return "video";
+        const availableVideoSlots = Math.min(
+          VIDEO_TILE_COUNT,
+          videoItems.length,
+          VIDEO_TILE_INDEXES.length,
+        );
+        const videoSlots = VIDEO_TILE_INDEXES.slice(0, availableVideoSlots);
+        return videoSlots.includes(index) ? "video" : "image";
       }),
     );
     setIndices(TILES.map((_, index) => index));
@@ -69,7 +72,10 @@ export default function BentoSlideshow({ media = [] }) {
       <div className="bento-grid">
         {TILES.map((tile, index) => {
           const mode = modes[index];
-          const pool = mode === "video" ? videoItems : imageItems;
+          let pool = mode === "video" ? videoItems : imageItems;
+          if (!pool.length) {
+            pool = mode === "video" ? imageItems : videoItems;
+          }
           const poolIndex = pool.length ? indices[index] % pool.length : -1;
           const currentRaw = poolIndex >= 0 ? pool[poolIndex] : null;
           const current =
