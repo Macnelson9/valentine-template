@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { AnimatePresence, Motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const OPEN_WHEN_NOTES = [
   {
