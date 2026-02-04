@@ -1,14 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-
-const RECEIPT_ITEMS = [
-  { label: "Gists shared", value: "∞" },
-  { label: "Support given", value: "Plenty" },
-  { label: "Laughs", value: "A lot" },
-  { label: "Patience", value: "Premium" },
-  { label: "Hugs (owed)", value: "Uncountable" },
-  { label: "Kisses (owed)", value: "Uncountable" },
-];
+import { COPY } from "../config.js";
 
 /**
  * @param {{ onBack: () => void, onOpenWhen: () => void }} props
@@ -23,11 +15,11 @@ export default function ReceiptScreen({ onBack, onOpenWhen }) {
         transition={{ duration: 0.35 }}
       >
         <header className="receipt-header">
-          <h2>Relationship Receipt 🧾</h2>
-          <p>4 months of us</p>
+          <h2>{COPY.receipt.title}</h2>
+          <p>{COPY.receipt.subtitle}</p>
         </header>
         <div className="receipt-items">
-          {RECEIPT_ITEMS.map((item) => (
+          {COPY.receipt.items.map((item) => (
             <div key={item.label} className="receipt-row">
               <span>{item.label}</span>
               <span>{item.value}</span>
@@ -35,20 +27,20 @@ export default function ReceiptScreen({ onBack, onOpenWhen }) {
           ))}
         </div>
         <div className="receipt-total">
-          <span>Total</span>
-          <span>Priceless 💛</span>
+          <span>{COPY.receipt.totalLabel}</span>
+          <span>{COPY.receipt.totalValue}</span>
         </div>
-        <p className="receipt-footer">Thank you for choosing me. 😚</p>
+        <p className="receipt-footer">{COPY.receipt.footer}</p>
         <div className="receipt-actions">
           <button className="btn btn-secondary" type="button" onClick={onBack}>
-            Back
+            {COPY.receipt.backLabel}
           </button>
           <button
             className="btn btn-primary"
             type="button"
             onClick={onOpenWhen}
           >
-            Open when…
+            {COPY.receipt.openWhenLabel}
           </button>
         </div>
       </motion.div>

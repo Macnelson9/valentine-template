@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-const TILES = [
+const DEFAULT_TILES = [
   { id: "hero", className: "bento-tile tile-hero" },
   { id: "tall", className: "bento-tile tile-tall" },
   { id: "wide", className: "bento-tile tile-wide" },
@@ -9,20 +9,30 @@ const TILES = [
   { id: "small-2", className: "bento-tile tile-small" },
   { id: "small-3", className: "bento-tile tile-small" },
 ];
-const VIDEO_TILE_COUNT = 2;
-const VIDEO_TILE_INDEXES = [1, 5];
 
 /**
- * @param {{ media: { type: "image" | "video", src: string, alt?: string }[] }} props
+ * @param {{
+ *   media: { type: "image" | "video", src: string, alt?: string }[],
+ *   tiles?: { id: string, className: string }[],
+ *   intervalMs?: number,
+ *   transitionMs?: number,
+ *   videoTileIndexes?: number[]
+ * }} props
  */
-export default function BentoSlideshow({ media = [] }) {
+export default function BentoSlideshow({
+  media = [],
+  tiles = DEFAULT_TILES,
+  intervalMs = 3200,
+  transitionMs = 5000,
+  videoTileIndexes = [1, 5],
+}) {
   const shouldReduceMotion = useReducedMotion();
   const [broken, setBroken] = useState({});
   const [indices, setIndices] = useState(() =>
-    TILES.map((_, index) => index),
+    tiles.map((_, index) => index),
   );
   const [modes, setModes] = useState(() =>
-    TILES.map((_, index) => (index % 2 === 0 ? "image" : "video")),
+    tiles.map((_, index) => (index % 2 === 0 ? "image" : "video")),
   );
 
   const mediaList = useMemo(() => media.filter(Boolean), [media]);
@@ -38,20 +48,20 @@ export default function BentoSlideshow({ media = [] }) {
   useEffect(() => {
     if (!mediaList.length) return;
     setModes(
-      TILES.map((_, index) => {
+      tiles.map((_, index) => {
         if (videoItems.length === 0) return "image";
         if (imageItems.length === 0) return "video";
         const availableVideoSlots = Math.min(
-          VIDEO_TILE_COUNT,
+          videoTileIndexes.length,
           videoItems.length,
-          VIDEO_TILE_INDEXES.length,
+          videoTileIndexes.length,
         );
-        const videoSlots = VIDEO_TILE_INDEXES.slice(0, availableVideoSlots);
+        const videoSlots = videoTileIndexes.slice(0, availableVideoSlots);
         return videoSlots.includes(index) ? "video" : "image";
       }),
     );
-    setIndices(TILES.map((_, index) => index));
-  }, [imageItems.length, mediaList.length, videoItems.length]);
+    setIndices(tiles.map((_, index) => index));
+  }, [imageItems.length, mediaList.length, tiles, videoItems.length, videoTileIndexes]);
 
   useEffect(() => {
     if (shouldReduceMotion || mediaList.length === 0) return undefined;
@@ -63,14 +73,14 @@ export default function BentoSlideshow({ media = [] }) {
           return (currentIndex + 1) % imageItems.length;
         }),
       );
-    }, 3200);
+    }, intervalMs);
     return () => window.clearInterval(interval);
-  }, [imageItems.length, mediaList.length, modes, shouldReduceMotion]);
+  }, [imageItems.length, mediaList.length, modes, shouldReduceMotion, intervalMs]);
 
   return (
     <div className="bento-slideshow" aria-hidden="true">
       <div className="bento-grid">
-        {TILES.map((tile, index) => {
+        {tiles.map((tile, index) => {
           const mode = modes[index];
           let pool = mode === "video" ? videoItems : imageItems;
           if (!pool.length) {
@@ -91,7 +101,7 @@ export default function BentoSlideshow({ media = [] }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 5, ease: "easeInOut" }}
+                  transition={{ duration: transitionMs / 1000, ease: "easeInOut" }}
                 >
                   {current ? (
                     current.type === "video" ? (

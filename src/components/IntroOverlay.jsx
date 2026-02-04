@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { COPY } from "../config.js";
 
 /**
  * @param {{ isVisible: boolean }} props
@@ -16,7 +17,7 @@ export default function IntroOverlay({ isVisible }) {
         transition={{ duration: 0.6 }}
       >
         <div className="intro-heart">💛</div>
-        <p className="intro-text">Loading something for my favorite person… 💛</p>
+        <p className="intro-text">{COPY.introText}</p>
       </motion.div>
       <div className="intro-ambient" aria-hidden="true" />
       <div className="intro-hearts" aria-hidden="true">

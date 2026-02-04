@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { COPY } from "../config.js";
 
 /**
  * @param {{ onReceipt: () => void, onOpenWhen: () => void }} props
@@ -14,14 +15,14 @@ export default function SuccessScreen({ onReceipt, onOpenWhen }) {
         transition={{ duration: 0.4 }}
       >
         <div className="success-emoji">😍</div>
-        <h2>Yayyy! 😍</h2>
-        <p>See you on Feb 14 😉</p>
+        <h2>{COPY.success.title}</h2>
+        <p>{COPY.success.subtitle}</p>
         <div className="success-actions">
           <button className="btn btn-primary" type="button" onClick={onReceipt}>
-            View 4-month receipt
+            {COPY.success.receiptLabel}
           </button>
           <button className="btn btn-secondary" type="button" onClick={onOpenWhen}>
-            Open when…
+            {COPY.success.openWhenLabel}
           </button>
         </div>
       </motion.div>

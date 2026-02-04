@@ -1,24 +1,17 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-
-const DEFAULT_STEPS = [
-  "Hey love 💛",
-  "Today makes it **4 months** of us.",
-  "Thank you for your kindness, your patience, and your love.",
-  "I’m grateful I get to do life with you… even in small ways.",
-  "So I have a question…",
-];
+import { COPY } from "../config.js";
 
 /**
  * @param {{ onComplete: () => void, steps?: string[] }} props
  */
-export default function SequenceCard({ onComplete, onContinue, steps = DEFAULT_STEPS }) {
+export default function SequenceCard({ onComplete, onContinue, steps }) {
   const shouldReduceMotion = useReducedMotion();
   const [visibleCount, setVisibleCount] = useState(1);
   const completedRef = useRef(false);
   const [completed, setCompleted] = useState(false);
 
-  const items = useMemo(() => steps, [steps]);
+  const items = useMemo(() => steps || COPY.sequenceLines, [steps]);
 
   useEffect(() => {
     if (shouldReduceMotion) {
@@ -92,7 +85,7 @@ export default function SequenceCard({ onComplete, onContinue, steps = DEFAULT_S
           type="button"
           onClick={onContinue}
         >
-          Keep going
+          {COPY.keepGoingLabel}
         </button>
       ) : null}
     </motion.div>

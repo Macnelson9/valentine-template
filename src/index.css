@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: light;
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
   --bg: #0b0e14;
@@ -14,6 +14,12 @@
   --accent-strong: #77b7ff;
   --outline: rgba(255, 255, 255, 0.12);
   --glow: rgba(248, 163, 196, 0.25);
+  --overlay-top: rgba(19, 24, 36, 0.35);
+  --overlay-bottom: rgba(7, 9, 15, 0.75);
+  --bento-start: #0e111a;
+  --bento-end: #101724;
+  --font-body: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Playwrite US Trad", "Playwrite", "Georgia", cursive;
 }
 
 * {
@@ -26,7 +32,7 @@ body {
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
 }
 
 h1,
@@ -35,11 +41,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Playwrite US Trad", "Playwrite", "Georgia", cursive;
+  font-family: var(--font-heading);
 }
 
 button {
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
 }
 
 .app {
@@ -51,11 +57,7 @@ button {
 .app-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(
-    circle at top,
-    rgba(19, 24, 36, 0.35),
-    rgba(7, 9, 15, 0.75)
-  );
+  background: radial-gradient(circle at top, var(--overlay-top), var(--overlay-bottom));
   z-index: 1;
   pointer-events: none;
 }
@@ -75,7 +77,7 @@ button {
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #0e111a 0%, #101724 100%);
+  background: linear-gradient(135deg, var(--bento-start) 0%, var(--bento-end) 100%);
 }
 
 .bento-grid {

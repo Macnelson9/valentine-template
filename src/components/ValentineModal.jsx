@@ -1,15 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const NO_MESSAGES = [
-  "Ah ah 😭 you sure? Try again joor 💖",
-  "Okay… but I packed love for you o 😅",
-  "This ‘no’ doesn’t match your vibe 😌",
-  "Stop forming strong 😭💘",
-  "My heart is doing backflip… say yes? 🥺",
-  "You dey do shakara 😄",
-  "No pressure. But I hope it’s a yes 😘",
-];
+import { COPY } from "../config.js";
 
 /**
  * @param {{ isOpen: boolean, onYes: () => void }} props
@@ -22,7 +13,9 @@ export default function ValentineModal({ isOpen, onYes }) {
   const message =
     noClickCount === 0
       ? null
-      : NO_MESSAGES[(noClickCount - 1) % NO_MESSAGES.length];
+      : COPY.valentine.noMessages[
+          (noClickCount - 1) % COPY.valentine.noMessages.length
+        ];
 
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true">
@@ -32,21 +25,21 @@ export default function ValentineModal({ isOpen, onYes }) {
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.35 }}
       >
-        <h2 className="modal-title">Will you be my Valentine? 💘</h2>
+        <h2 className="modal-title">{COPY.valentine.title}</h2>
         <div className="modal-actions">
           <button
             className="btn btn-primary"
             type="button"
             onClick={onYes}
           >
-            Yes 💘
+            {COPY.valentine.yesLabel}
           </button>
           <button
             className="btn btn-secondary"
             type="button"
             onClick={() => setNoClickCount((prev) => prev + 1)}
           >
-            No 😅
+            {COPY.valentine.noLabel}
           </button>
         </div>
         <div className="modal-message" aria-live="polite">

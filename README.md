@@ -16,14 +16,19 @@ Single‑page romantic microsite built with React + Vite. It features a bento‑
 - Framer Motion
 - Plain CSS (no Tailwind)
 
-## Add your media
-Media is read from `src/assets` (imported in `src/App.jsx`).
+## Customize
+All personalization lives in `src/config.js`.
 
-- Add your photos/videos to `src/assets`.
-- Update the `MEDIA` array in `src/App.jsx` to point at those imports.
-- Example image/video sizes:
-  - Images: 1600–2400px on the long edge, JPG/WEBP 250–500KB.
-  - Videos: 6–12 seconds, H.264 MP4, 720p–1080p, 2–6MB.
+### Add your media
+Media is loaded from `/public/assets` via `SITE_CONFIG.media`.
+
+- Replace the placeholder files in `public/assets` with your own photos/videos.
+- Update `SITE_CONFIG.media` in `src/config.js` with your new file names.
+- Example paths: `/assets/1.jpg`, `/assets/2.mp4`.
+
+Recommended sizes:
+- Images: 1600–2400px on the long edge, JPG/WEBP 250–500KB.
+- Videos: 6–12 seconds, H.264 MP4, 720p–1080p, 2–6MB.
 
 ## Run locally
 ```bash
@@ -31,26 +36,23 @@ npm install
 npm run dev
 ```
 
-## Customize
+## Template usage
+1) Click **Use this template** on GitHub.
+2) Clone your new repo.
+3) Update `src/config.js` and replace files in `public/assets`.
+4) Deploy (Vercel/Netlify) or run locally.
+
+### Update copy, theme, and timing
+- Text, labels, and notes: `COPY` in `src/config.js`
+- Colors & fonts: `SITE_CONFIG.theme` in `src/config.js`
+- Slideshow timing: `SITE_CONFIG.animation` in `src/config.js`
+- Heart particles: `SITE_CONFIG.hearts` in `src/config.js`
+- Bento layout: `SITE_CONFIG.bento` in `src/config.js`
+
+## Code map
 - Main flow/state machine: `src/App.jsx`
 - Slideshow: `src/components/BentoSlideshow.jsx`
 - Valentine modal: `src/components/ValentineModal.jsx`
 - Receipt: `src/components/ReceiptScreen.jsx`
 - Open When…: `src/components/OpenWhenScreen.jsx`
 - Global styling: `src/index.css`
-
-## Valentine microsite
-
-### Add your media
-- Put your photos and videos in `public/assets`.
-- Update the `MEDIA` array in `src/App.jsx` with your file names.
-- Example paths: `/assets/1.jpg`, `/assets/2.mp4`.
-
-Recommended sizes
-- Images: 1600–2400px on the long edge, JPG/WEBP around 250–500KB.
-- Videos: 6–12 seconds, H.264 MP4, 720p–1080p, 2–6MB.
-- Keep filenames short and avoid spaces.
-
-### Run locally
-- `npm install`
-- `npm run dev`

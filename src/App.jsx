@@ -9,24 +9,7 @@ import SequenceCard from "./components/SequenceCard.jsx";
 import SuccessScreen from "./components/SuccessScreen.jsx";
 import ValentineModal from "./components/ValentineModal.jsx";
 
-import cutie from "./assets/cutie.jpeg";
-import cutie2 from "./assets/cutie2.jpeg";
-import cutie3 from "./assets/cutie3.jpeg";
-import cutie4 from "./assets/cutie4.jpeg";
-import cutie5 from "./assets/cutie5.jpeg";
-import compilationVideo from "./assets/Compilation video.mp4";
-
-const MEDIA = [
-  { type: "image", src: cutie, alt: "Memory one" },
-  { type: "image", src: cutie2, alt: "Memory two" },
-  { type: "video", src: compilationVideo, alt: "Memory three" },
-  { type: "image", src: cutie3, alt: "Memory four" },
-  { type: "image", src: cutie4, alt: "Memory five" },
-  { type: "image", src: cutie5, alt: "Memory six" },
-];
-
-const HEART_EMOJIS = ["💛", "💘", "💖", "💕", "😍"];
-const MAX_HEARTS = 200;
+import { SITE_CONFIG } from "./config.js";
 
 const randomBetween = (min, max) => min + Math.random() * (max - min);
 
@@ -47,10 +30,15 @@ function App() {
     (x, y, options = {}) => {
       if (shouldReduceMotion) return;
       const {
-        count = Math.floor(randomBetween(8, 16)),
-        spread = 90,
-        sizeMin = 14,
-        sizeMax = 26,
+        count = Math.floor(
+          randomBetween(
+            SITE_CONFIG.hearts.spawn.countMin,
+            SITE_CONFIG.hearts.spawn.countMax,
+          ),
+        ),
+        spread = SITE_CONFIG.hearts.spawn.spread,
+        sizeMin = SITE_CONFIG.hearts.spawn.sizeMin,
+        sizeMax = SITE_CONFIG.hearts.spawn.sizeMax,
       } = options;
 
       setHearts((prev) => {
@@ -58,16 +46,27 @@ function App() {
         for (let i = 0; i < count; i += 1) {
           const id = idRef.current++;
           const size = randomBetween(sizeMin, sizeMax);
-          const duration = randomBetween(1200, 1900);
+          const duration = randomBetween(
+            SITE_CONFIG.hearts.spawn.durationMin,
+            SITE_CONFIG.hearts.spawn.durationMax,
+          );
           const drift = randomBetween(-spread, spread);
-          const rise = randomBetween(120, 220);
-          const rotate = randomBetween(-35, 35);
+          const rise = randomBetween(
+            SITE_CONFIG.hearts.spawn.riseMin,
+            SITE_CONFIG.hearts.spawn.riseMax,
+          );
+          const rotate = randomBetween(
+            SITE_CONFIG.hearts.spawn.rotateMin,
+            SITE_CONFIG.hearts.spawn.rotateMax,
+          );
           const emoji =
-            HEART_EMOJIS[Math.floor(Math.random() * HEART_EMOJIS.length)];
+            SITE_CONFIG.hearts.emojis[
+              Math.floor(Math.random() * SITE_CONFIG.hearts.emojis.length)
+            ];
           next.push({
             id,
-            x: x + randomBetween(-24, 24),
-            y: y + randomBetween(-18, 18),
+            x: x + randomBetween(-SITE_CONFIG.hearts.spawn.offsetX, SITE_CONFIG.hearts.spawn.offsetX),
+            y: y + randomBetween(-SITE_CONFIG.hearts.spawn.offsetY, SITE_CONFIG.hearts.spawn.offsetY),
             size,
             duration,
             drift,
@@ -80,7 +79,7 @@ function App() {
             setHearts((current) => current.filter((heart) => heart.id !== id));
           }, duration + 120);
         }
-        return next.slice(-MAX_HEARTS);
+        return next.slice(-SITE_CONFIG.hearts.maxHearts);
       });
     },
     [shouldReduceMotion],
@@ -103,16 +102,42 @@ function App() {
     setShowValentine(false);
     setScreen("success");
     spawnHearts(window.innerWidth / 2, window.innerHeight / 2, {
-      count: 42,
-      spread: 200,
-      sizeMin: 18,
-      sizeMax: 38,
+      count: SITE_CONFIG.hearts.burst.count,
+      spread: SITE_CONFIG.hearts.burst.spread,
+      sizeMin: SITE_CONFIG.hearts.burst.sizeMin,
+      sizeMax: SITE_CONFIG.hearts.burst.sizeMax,
     });
   }, [spawnHearts]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    const { colors, fonts } = SITE_CONFIG.theme;
+    root.style.setProperty("--bg", colors.bg);
+    root.style.setProperty("--card", colors.card);
+    root.style.setProperty("--card-strong", colors.cardStrong);
+    root.style.setProperty("--text", colors.text);
+    root.style.setProperty("--muted", colors.muted);
+    root.style.setProperty("--accent", colors.accent);
+    root.style.setProperty("--accent-strong", colors.accentStrong);
+    root.style.setProperty("--outline", colors.outline);
+    root.style.setProperty("--glow", colors.glow);
+    root.style.setProperty("--overlay-top", colors.overlayTop);
+    root.style.setProperty("--overlay-bottom", colors.overlayBottom);
+    root.style.setProperty("--bento-start", colors.bentoStart);
+    root.style.setProperty("--bento-end", colors.bentoEnd);
+    root.style.setProperty("--font-body", fonts.body);
+    root.style.setProperty("--font-heading", fonts.heading);
+  }, []);
+
   return (
     <div className="app" onPointerDownCapture={handlePointerDown}>
-      <BentoSlideshow media={MEDIA} />
+      <BentoSlideshow
+        media={SITE_CONFIG.media}
+        tiles={SITE_CONFIG.bento.tiles}
+        intervalMs={SITE_CONFIG.animation.slideshowIntervalMs}
+        transitionMs={SITE_CONFIG.animation.slideshowTransitionMs}
+        videoTileIndexes={SITE_CONFIG.bento.videoTileIndexes}
+      />
       <div className="app-overlay" />
       <HeartParticles hearts={hearts} />
       <IntroOverlay isVisible={introVisible} />

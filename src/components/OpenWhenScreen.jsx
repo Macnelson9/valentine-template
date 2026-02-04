@@ -1,32 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-
-const OPEN_WHEN_NOTES = [
-  {
-    label: "Open when you miss me 🥹",
-    note: "Close your eyes and remember one small moment that made you smile. I'm right there with you.",
-  },
-  {
-    label: "Open when you’re stressed 🤧",
-    note: "Breathe in for four, hold for four, out for four. I’m cheering for you, always.",
-  },
-  {
-    label: "Open when you want to smile 😄",
-    note: "Think of the cutest thing we’ve laughed about. I’m saving more for you.",
-  },
-  {
-    label: "Open when you need motivation 💪",
-    note: "You’re stronger than you feel right now. I believe in you and your big beautiful future.",
-  },
-  {
-    label: "Open when it’s late at night 🌙",
-    note: "Pretend this is a forehead kiss. Rest well, love. I’ll see you in the morning.",
-  },
-  {
-    label: "Open when you feel like you're not enough 🥺",
-    note: "You are enough. You are perfect. You are loved. You are wanted. You are needed. You are valued. You are important. You are worthy.",
-  },
-];
+import { COPY } from "../config.js";
 
 /**
  * @param {{ onBack: () => void }} props
@@ -35,7 +9,7 @@ export default function OpenWhenScreen({ onBack }) {
   const [activeIndex, setActiveIndex] = useState(null);
   const activeNote = useMemo(() => {
     if (activeIndex === null) return null;
-    return OPEN_WHEN_NOTES[activeIndex];
+    return COPY.openWhen.items[activeIndex];
   }, [activeIndex]);
 
   return (
@@ -47,11 +21,11 @@ export default function OpenWhenScreen({ onBack }) {
         transition={{ duration: 0.35 }}
       >
         <header className="open-when-header">
-          <h2>Open When… 💌</h2>
-          <p>Pick a little envelope made for you.</p>
+          <h2>{COPY.openWhen.title}</h2>
+          <p>{COPY.openWhen.subtitle}</p>
         </header>
         <div className="open-when-grid">
-          {OPEN_WHEN_NOTES.map((item, index) => (
+          {COPY.openWhen.items.map((item, index) => (
             <button
               key={item.label}
               className="open-when-item"
@@ -65,7 +39,7 @@ export default function OpenWhenScreen({ onBack }) {
         </div>
         <div className="open-when-actions">
           <button className="btn btn-secondary" type="button" onClick={onBack}>
-            Back
+            {COPY.openWhen.backLabel}
           </button>
         </div>
       </motion.div>
@@ -90,14 +64,14 @@ export default function OpenWhenScreen({ onBack }) {
               <h3 className="modal-title">{activeNote.label}</h3>
               <p className="modal-note">{activeNote.note}</p>
               <button className="btn btn-secondary" type="button">
-                Play voice note (soon)
+                {COPY.openWhen.voiceNoteLabel}
               </button>
               <button
                 className="btn btn-primary"
                 type="button"
                 onClick={() => setActiveIndex(null)}
               >
-                Close
+                {COPY.openWhen.closeLabel}
               </button>
             </motion.div>
           </motion.div>
