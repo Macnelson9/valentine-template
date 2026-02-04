@@ -1,10 +1,10 @@
-# 4 Months + Valentine Microsite
+# Valentine Microsite Template
 
-Single‑page romantic microsite built with React + Vite. It features a bento‑grid slideshow background, a timed 4‑month message sequence, a Valentine prompt with playful “No” messages, a relationship receipt, and “Open When…” envelopes. Every interaction emits floating hearts.
+Single‑page romantic microsite template built with React + Vite. It features a bento‑grid slideshow background, a timed message sequence, a Valentine prompt with playful “No” messages, a relationship receipt, and “Open When…” envelopes. Every interaction emits floating hearts.
 
 ## Features
 - Bento grid slideshow of images/videos (crossfading tiles)
-- 4‑month message sequence with “Keep going” CTA
+- Timed message sequence with “Keep going” CTA
 - Valentine modal with looping “No” responses
 - Success screen with routes to extra experiences
 - Relationship Receipt screen
@@ -41,6 +41,7 @@ npm run dev
 2) Clone your new repo.
 3) Update `src/config.js` and replace files in `public/assets`.
 4) Deploy (Vercel/Netlify) or run locally.
+5) Keep this repo public; keep your personal version in a separate private repo if needed.
 
 ### Update copy, theme, and timing
 - Text, labels, and notes: `COPY` in `src/config.js`
